@@ -225,7 +225,7 @@ For `view`, we render a round rectangle with a given color. The `matcher` can ma
 view env data basedata =
     let
         gd =
-            env.globalData
+            env.globalData.internalData
     in
     ( Canvas.shapes [ fill data.color ]
         [ roundRect (posToReal gd basedata.position) (lengthToReal gd 20) (lengthToReal gd 10) [ 10, 10, 10, 10 ]

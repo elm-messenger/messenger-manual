@@ -7,10 +7,8 @@
 
 === `SOMChangeScene`
 
-*Definition.* `SOMChangeScene ( Maybe scenemsg ) String ( Maybe (Transition userdata) )`
 *Definition.* `SOMChangeScene ( Maybe scenemsg ) String`
 
-This message is used to change to another scene. Users need to provide the scene init data, the scene name, and the transition.
 This message is used to change to another scene. Users need to provide the scene init data, the scene name.
 
 === `SOMPlayAudio`
@@ -97,6 +95,16 @@ Save global data (including user data) to local storage.
 
 See @localstorage.
 
+=== `SOMGCLoad`, `SOMGCUnload`, `SOMCallGC`
+
+*Definition. `SOMLoadGC (GlobalComponentStorage userdata scenemsg)`*
+
+*Definition. `SOMUnloadGC GCTarget`*
+
+*Definition. `SOMCallGC (List ( GCTarget, GCMsg ))`*
+
+See @gc.
+
 == Game Configurations
 
 Users may want to change the settings in `MainConfig.elm` to match their demand. This section explains what each options in that configuration file means.
@@ -181,6 +189,10 @@ Arguments:
 == Roadmap
 
 This sections contains some ideas we'd like to implement in future versions of Messenger. We welcome users to post feature request in our Messenger repository's issue.
+
+=== Runtime Asset Loading
+
+Load asset at runtime.
 
 === Multi-pass Updater
 

@@ -25,7 +25,7 @@ Now put some image to `assets/bg.png` (better to be a background image), and edi
 
 ```elm
 view env data =
-  renderSprite env.globalData [] ( 0, 0 ) ( 1920, 1080 ) "bg"
+  renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "bg"
 ```
 
 Now `make` and see the result!
@@ -44,7 +44,7 @@ You may omit height or width to let Messenger automatically infer the other one 
 
 ```elm
 view env data =
-  renderSprite env.globalData [] ( 0, 0 ) ( 1920, 0 ) "bg"
+  renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 0 ) "bg"
 ```
 
 If the "bg" image is 16:9, then Messenger will calculate its height to be 1080.
@@ -53,7 +53,7 @@ Moreover, you may omit both width and height:
 
 ```elm
 view env data =
-  renderSprite env.globalData [] ( 0, 0 ) ( 0, 0 ) "bg"
+  renderSprite env.globalData.internalData [] ( 0, 0 ) ( 0, 0 ) "bg"
 ```
 
 In that case, Messenger will use the size of the image as the virtual size directly.
@@ -72,6 +72,14 @@ alignment and middle baseline
 - `renderTextWithSettings`: Renders a text with manual settings
 - And more in that module
 
+=== Text Box
+
+Rendering multiline text in Canvas is feasible through some external JS interaction. Messenger uses #link("https://github.com/geongeorge/canvas-txt")[Canvas-Txt] library to render multiline text.
+
+APIs are provided through `Messenger.Render.TextBox`. The most low-level call is `renderTextBoxWithAll`. Others are some commonly-used functions from it.
+
+You need to provide a `size` other than the position of your text. The `size` is the size of your text box. All your text will be rendered in that box and never exceeds the width of the box. It will automatically break your sentence. You may also use `"\n"` to manually start a new line. Other settings are explained #link("https://github.com/geongeorge/canvas-txt?tab=readme-ov-file#properties")[here].
+
 == Basic Shapes
 
 *Review.* How to draw a rectangle in `elm-canvas`?
@@ -89,7 +97,7 @@ However, that coordinates are in real coordinates. To draw a rectangle in virtua
 ```elm
 viewModel env model =
     shapes [ fill Color.black ]
-        [ rect (posToReal env.globalData ( 0, 0 )) (lengthToReal env.globalData 100) (lengthToReal env.globalData 100)
+        [ rect (posToReal env.globalData.internalData ( 0, 0 )) (lengthToReal env.globalData.internalData 100) (lengthToReal env.globalData.internalData 100)
         ]
 ```
 
@@ -124,7 +132,7 @@ allSpriteSheets =
 Then users can render a sprite sheet by:
 
 ```elm
-renderSprite env.globalData [ imageSmoothing False ] ( 0, 0 ) ( 100, 0 ) ("spritesheet1.sp1")
+renderSprite env.globalData.internalData [ imageSmoothing False ] ( 0, 0 ) ( 100, 0 ) ("spritesheet1.sp1")
 ```
 
 Messenger will load all the sprites in `allSpriteSheets` to memory when the game starts, so users can use `renderSprite` to render it just like a normal sprite.

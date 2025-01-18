@@ -40,7 +40,7 @@ The `abstract` function mainly takes use of the _delayed evaluation_ to implemen
 First, consider a simple example.
 
 ```elm
-type Absturact
+type Abstract
     = Roll (() -> Abstract)
 
 type alias Concrete a =

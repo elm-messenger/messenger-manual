@@ -9,9 +9,9 @@ To create a simple game in Messenger, the first step is to install the Messenger
 Messenger CLI is written in Python. You need to install `python>=3.7`. #link("https://pipx.pypa.io/stable/")[pipx] is a tool to manage python applications. It is recommended to use `pipx` instead of `pip` on Unix-based OS (including WSL).
 
 ```bash
-pipx install -i https://pypi.python.org/simple elm-messenger>=0.3.7
+pipx install -i https://pypi.python.org/simple elm-messenger>=0.4.0
 # Or use pip on Windows:
-pip install -i https://pypi.python.org/simple elm-messenger>=0.3.7
+pip install -i https://pypi.python.org/simple elm-messenger>=0.4.0
 ```
 
 This tool assists in quickly building a project. To create a new project, use the following commands:
@@ -65,6 +65,7 @@ See @cli to learn more about Messenger CLI.
     ├── Main.elm
     └── Scenes # Scene folder
         ├── AllScenes.elm # Stores all the scene data
+        ├── GlobalComponents.elm # Stores all the global components
         └── Home # A scene called "Home"
             ├── MainLayer # A layer called "MainLayer" in Home
             │   ├── Model.elm # Layer definitions
@@ -113,7 +114,7 @@ import Messenger.Render.Text exposing (renderText)
 ...
 view : LayerView SceneCommonData UserData Data
 view env data =
-    renderText env.globalData 40 "Hello World" "Arial" ( 900, 500 )
+    renderText env.globalData.internalData 40 "Hello World" "Arial" ( 900, 500 )
 ```
 
 `LayerView` is a type sugar to represent the `view` type of layer.

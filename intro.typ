@@ -43,7 +43,7 @@ There are several modules (subprojects) within the Messenger project. All the de
 - #link("https://github.com/linsyking/messenger-examples")[Messenger examples]. Some example projects
 - #link("https://github.com/linsyking/messenger-templates")[Messenger templates]. Templates to use Messenger library. Used in the Messenger CLI
 
-*Note.* This manual is compatible with core `12.0.0 <= v < 13.0.0`, templates 0.3.7 and CLI 0.3.7.
+*Note.* This manual is compatible with core `13.0.0 <= v < 14.0.0`, templates 0.4.0 and CLI 0.4.0.
 
 == Messenger Model
 
@@ -75,36 +75,50 @@ The concept of the Messenger model is summarized in the following diagram:
     edge((2, 1), (2+0.5, 1), "->", stroke: 1pt + yellow.darken(20%)),
 
     edge(<l1>, <l2>, "<->", stroke: 1pt + teal.darken(20%)),
-    
-    node(enclose: ((0.5,-1), (3,2)), corner-radius: 5pt, stroke: 1pt + blue, align(left + top, [Scene]), name:<scene>),
-    node((1.2, 4.8), [`WorldEvent`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<world>),
-    node((1.2, 5.6), [Elm Subscriptions], corner-radius: 5pt,fill: gray.lighten(60%), stroke: 1pt + gray.darken(20%), name:<sub>),
-    node((0.4, 4), [`GlobalData`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<gd>),
-    node((1.2, 4), [`UserEvent`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<user>),
-    edge(<gd>, <scene>, "->"),
-    edge(<user>, <scene>, "->"),
+
+    node(enclose: ((0.5,-1), (3,2)), corner-radius: 5pt, stroke: 1pt + blue, align(right + top, [Scene]), name:<scene>),
+    node(enclose: ((0,-1.6),(3.5, 2.5)), align(right + top, [User Code]), stroke: (paint: blue, dash: "dashed")),
+
+    let b1_height = 4.5,
+    node((0.8, b1_height), [`Update`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<gcupdate>),
+    node((2.3, b1_height), [`SceneResultRemap`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<srr>),
+    node((3.5, b1_height), [`PostProcessor`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<pp>),
+
+    node(enclose: (<gcupdate>, <srr>, <pp>, (0.3, b1_height - 1)), corner-radius: 5pt,  stroke: (paint: blue, dash: "dashed"), align(right + top, [Global Component]), name:<gccore>),
+    edge(<scene>, <gccore>, "->", label: [`GCLoad/GCUnload`], label-side: center),
+
+    let base_height = 5.8,
+
+    node((1.2, base_height + 0.8), [`WorldEvent`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<world>),
+    node((1.2, base_height + 1.6), [Elm Subscriptions], corner-radius: 5pt,fill: gray.lighten(60%), stroke: 1pt + gray.darken(20%), name:<sub>),
+    node((0.4, base_height), [`GlobalData`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<gd>),
+    node((1.2, base_height), [`UserEvent`], corner-radius: 5pt,fill: red.lighten(60%), stroke: 1pt + red.darken(20%), name:<user>),
+    edge(<gcupdate>, <scene>, "->"),
+    edge(<gd>, <gcupdate>, "->"),
+    edge(<user>, <gcupdate>, "->"),
     edge(<sub>, <world>, "->"),
     edge(<world>, <user>, "->", label: "Filter"),
-    node((2, 4), [`GlobalData`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<ngd>),
-    node((2.8, 4), [`SceneOutputMsg`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<som>),
-    node((2.8, 6), [`SOMHandler`], fill: yellow.lighten(60%), stroke: 1pt + yellow.darken(20%), name:<somhandler>, shape: hexagon),
-    node((3.8, 5), [`ViewHandler`], fill: yellow.lighten(60%), stroke: 1pt + yellow.darken(20%), name:<viewhandler>, shape: hexagon),
-    node((3.8, 6), [Side Effects], corner-radius: 5pt, fill: gray.lighten(60%), stroke: 1pt + gray.darken(20%), name:<sideeff>),
-    node((3.8, 4), [`Renderable`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<render>),
-    node((2, 5.5), [Core Data], corner-radius: 5pt, fill: orange.lighten(60%), stroke: 1pt + orange.darken(20%), name:<cdata>),
-    edge(<world>, (2, 4.8), <cdata>, "-->"),
-    edge(<somhandler>, (2.6, 5.5), <cdata>, "-->"),
-    edge(<scene>, <ngd>, "->"),
-    edge(<scene>, <som>, "->"),
+    node((2, base_height), [`GlobalData`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<ngd>),
+    node((2.8, base_height), [`SceneOutputMsg`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<som>),
+    node((2.8, base_height + 2), [`SOMHandler`], fill: yellow.lighten(60%), stroke: 1pt + yellow.darken(20%), name:<somhandler>, shape: hexagon),
+    node((3.8, base_height + 1), [`ViewHandler`], fill: yellow.lighten(60%), stroke: 1pt + yellow.darken(20%), name:<viewhandler>, shape: hexagon),
+    node((3.8, base_height + 2), [Side Effects], corner-radius: 5pt, fill: gray.lighten(60%), stroke: 1pt + gray.darken(20%), name:<sideeff>),
+    node((3.8, base_height), [`Renderable`], corner-radius: 5pt, fill: green.lighten(60%), stroke: 1pt + green.darken(20%), name:<render>),
+    node((2, base_height + 1.5), [Core Data], corner-radius: 5pt, fill: orange.lighten(60%), stroke: 1pt + orange.darken(20%), name:<cdata>),
+    edge(<world>, (2, base_height + 0.8), <cdata>, "-->"),
+    edge(<somhandler>, (2.6, base_height + 1.5), <cdata>, "-->"),
+    edge(<scene>, <srr>, "->"),
+    edge(<srr>, <ngd>, "->"),
+    edge(<srr>, <som>, "->"),
     edge(<ngd>, <somhandler>, "->"),
     edge(<som>, <somhandler>, "->"),
     edge(<render>, <viewhandler>, "->"),
     edge(<viewhandler>, <sideeff>, "->"),
     edge(<somhandler>, <sideeff>, "->"),
-    edge(<scene>, <render>, "->"),
-    node(enclose: ((0,-2),(3.5, 2.5)), align(left + top, [User Code]), stroke: (paint: blue, dash: "dashed")),
-    edge(<somhandler> ,(0.4,6), <gd>, "->"),
-    node(enclose: ((0, 3),(4.8, 6.5)), align(left + top, [Core Code]), stroke: (paint: red, dash: "dashed")),
+    edge(<scene>, <pp>, "->"),
+    edge(<pp>, <render>, "->"),
+    edge(<somhandler> ,(0.4,base_height+2), <gd>, "->"),
+    node(enclose: ((0, 3),(4.8, base_height + 2.5)), align(right + top, [Core Code]), stroke: (paint: red, dash: "dashed")),
   )
 ]
 
@@ -154,8 +168,7 @@ Messenger CLI will use templates to help you create scenes, layer and components
 
 The `Msg` type of Messenger is defined as below:
 
-#grid(columns: (4fr, 5fr),
-  [```elm
+```elm
 type Msg othertar msg sommsg
     = Parent (MsgBase msg sommsg)
     | Other (othertar, msg)
@@ -167,9 +180,8 @@ type MsgBase othermsg sommsg
     | OtherMsg othermsg
   ```
   `SOMMsg`, or _Scene Output Message_, is a message that can directly interact with the core. For example, to play an audio, users can emit a `SOMPlayAudio` message, and the core will handle it.
-  ],
-  [
-    #set align(right)
+#pagebreak()
+
     #diagram(
       node-stroke: 1pt,
       edge-stroke: 1pt,
@@ -194,8 +206,6 @@ type MsgBase othermsg sommsg
       edge((2.6, 0), (2.6, .8), `SOMMsg`, "->"),
       edge((0, 0), (1.3, .8), `OtherMsg`, "->", bend: -10deg)
     )
-  ]
-)
 
 `SOMMsg` is passed to the core from Component $->$ Layer $->$ Scene. It's possible to block `SOMMsg` from a higher level. See @sommsg to learn more about `SOMMsg`s.
 

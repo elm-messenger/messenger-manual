@@ -13,9 +13,6 @@
 )
 #show heading: it => {it;text()[#v(0.3em, weak: true)];text()[#h(0em)]}
 #set heading(numbering: "1.")
-// #show regex("\b[Ss]cenes?\b"): it => {text(fill: purple, it)}
-// #show regex("\b[Ll]ayers?\b"): it => {text(fill: eastern, it)}
-// #show regex("\b[Cc]omponents?\b"): it => {text(fill: green, it)}
 
 #line(start: (0%, 10%), end: (8.5in, 10%), stroke: (thickness: 2pt))
 
@@ -58,8 +55,6 @@
 #include "event.typ"
 
 #include "component.typ"
-
-#include "transition.typ"
 
 #include "sceneproto.typ"
 

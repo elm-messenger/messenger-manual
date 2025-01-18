@@ -54,19 +54,6 @@ messenger layer -c Game A
 
 Addition to set the data type of `Comp`, set the data type for initialize a `Comp` is necessary. Since we would like to determine the position, size and color when initializing, add codes in `Scenes/Home/Components/ComponentBase.elm`:
 
-#grid(columns: (1fr, 1fr),
-  [
-    #set align(center)
-```elm
-type alias Data =
-    { left : Float
-    , top : Float
-    , width : Float
-    , height : Float
-    , color : Color
-    }
-```
-], [
 ```elm
 type alias Init =
     { left : Float
@@ -75,9 +62,15 @@ type alias Init =
     , height : Float
     , color : Color
     }
+type alias Data =
+    { left : Float
+    , top : Float
+    , width : Float
+    , height : Float
+    , color : Color
+    }
 ```
-  ]
-)
+
 Then add the message type for initialization in `ComponentMsg`.
 
 However, the data set in `ComponentBase.elm` will be applied to all types of components. So it is a choice to set the init data and message type for every single type of component. Users can create a file named `Init.elm` in `Scene/Home/Components/Comp` to store them separately. Users can also use the option `--init` or `-i` to do this when creating the component. Don't forget to import it in `ComponentBase.elm`.
